@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title>Viu Ex   </title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!-- Vue Ex -->
+    <script src="https://unpkg.com/vuex@3.1.2/dist/vuex.js"></script>
+
+
+
+</head>
+<body>
+    <div id="App">
+       
+        <padre></padre> 
+        
+    </div>
+
+    <script>
+        Vue.component('padre',{
+            template:`
+                <div class="p-5 bg-danger">Soy el padre
+                    
+                    <h2>{{numero}}</h2>
+                    <hijo></hijo>
+                   
+                </div>
+
+            `,
+            computed:{
+                ...Vuex.mapState(['numero'])
+            }
+        });
+
+        Vue.component('hijo',{
+            template:
+            `
+                <div class="bg-dark p-2">soy el hijo
+                <h2>{{numero}}</h2>
+                <button class="btn btn-success" @click="aumentar">+</button>
+                
+                <button class="btn btn-success" @click="disminuir(2)">-</button>
+                <button class="btn btn-danger" @click="optenerCursos">OptenerCuros</button>
+                <ul v-for="curso of cursos" >
+                    <li class="p-2 text-white"> {{curso.nombre}} </li>
+                </ul>
+
+                </div>
+            `,
+            computed:{//en computed por que esta a la ecucha de las propiedades
+                ...Vuex.mapState(['numero','cursos'])  // mapea los states y indicamos que data queremos almacenar
+                
+            },
+            methods:{
+                ...Vuex.mapMutations(['aumentar','disminuir']), // las mutatios Siempre se colocan en los Methods
+
+                ...Vuex.mapActions(['optenerCursos']),
+             
+            },
+            beforeMount(){//antes de pintar html lleno los cursos (LifeCycle)
+                   store.dispatch('optenerCursos') //this.optenerCurosos //dispatch llama actiones de store
+                   console.log('before');
+                   
+                   
+                }
+        });
+
+        const store= new Vuex.Store({
+           //data
+            state:{
+                numero:0,
+                cursos:[]//traido de json db
+            },
+
+            //comuted(comit('')) 
+            mutations:{
+                aumentar(state){ //$store.commit('aumentar')
+                    state.numero++;
+                },
+                
+                disminuir(state,n){ //$store.commit('aumentar')
+                    state.numero-=n
+                },
+                llenarCursos(state,cursos){
+                    state.cursos=cursos;
+                }
+
+            },
+            //funciones que permiten ser asincronas y db y llaman mutaciones
+            actions:{
+                async optenerCursos({commit}){
+                    const cursosPuros = await fetch('cursos.json');
+                    const cursos = await cursosPuros.json();
+                    commit('llenarCursos',cursos);
+                }
+            }
+        })
+
+        
+        new Vue({
+          el:'#App',
+          store:store //vuex
+
+        })
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title>Viu Ex   </title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!-- Vue Ex -->
+    <script src="https://unpkg.com/vuex@3.1.2/dist/vuex.js"></script>
+
+
+
+</head>
+<body>
+    <div id="App">
+       
+        <padre></padre> 
+        <padre></padre> 
+    </div>
+
+    <script>
+        Vue.component('padre',{
+            template:`
+                <div class="p-5 bg-danger">Soy el padre
+                    
+                    <h2>{{numero}}</h2>
+                    <hijo></hijo>
+                    <hijo></hijo>
+                </div>
+
+            `,
+            computed:{
+                ...Vuex.mapState(['numero'])
+            }
+        });
+
+        Vue.component('hijo',{
+            template:`
+                <div class="bg-dark p-2">soy el hijo
+                <h2>{{numero}}</h2>
+                <button class="btn btn-success" @click="aumentar">+</button>
+                
+                <button class="btn btn-success" @click="disminuir(2)">-</button>
+                </div>
+            `,
+            computed:{//en computed por que esta a la ecucha de las propiedades
+                ...Vuex.mapState(['numero'])  // mapea los states y indicamos que data queremos almacenar
+                
+            },
+            methods:{
+                ...Vuex.mapMutations(['aumentar','disminuir']) // las mutatios Siempre se colocan en los Methods
+                ,alertar(){
+                    alert('aka')
+                }
+            }
+        });
+
+        const store= new Vuex.Store({
+           //data
+            state:{
+                numero:0
+            },
+
+            //comuted(comit('')) 
+            mutations:{
+                aumentar(state){ //$store.commit('aumentar')
+                    state.numero++;
+                },
+                
+                disminuir(state,n){ //$store.commit('aumentar')
+                    state.numero-=n
+                }
+            }
+        })
+
+        
+        new Vue({
+          el:'#App',
+          store:store //vuex
+
+        })
+    </script>
+
+</body>
+</html>

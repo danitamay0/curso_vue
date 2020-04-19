@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+<body>
+        
+    <div id="App" class="container mt-5">
+        <div class="text-white" :class="[{'bg-danger' : !color , 'bg-info' : color},'p-5']">
+            <p class="">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime a dignissimos
+                 nihil explicabo incidunt voluptate reprehenderit ea quibusdam soluta fugit beatae 
+                 sed hic, error repellat laborum, excepturi quod corrupti est?
+            </p>
+        </div>
+
+        <div class="text-white" :class="[bgchange,'p-5']">
+            <p class="">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime a dignissimos
+                 nihil explicabo incidunt voluptate reprehenderit ea quibusdam soluta fugit beatae 
+                 sed hic, error repellat laborum, excepturi quod corrupti est?
+            </p>
+        </div>
+    
+        <select name="" id="" v-model="bgchange"> 
+            <option value="bg-success">
+                verde
+            </option>
+            <option value="bg-dark">Dark</option>
+            <option value="bg-danger">Red</option>
+        </select>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="index.js"></script>
+</body>
+
+</html>
